@@ -33,8 +33,24 @@ public class Practica1 {
         ArrayList<Cesion> ces= new ArrayList<Cesion>();
         Scanner capt = new Scanner(System.in);
         Validacion val = new Validacion();
-        
+        int PR = 6000;
 
+        /*Pedir precio por pantalla*/
+        System.out.println("Introduzca el precio total de las motos"
+                +" que puede tener un mismo miembro");
+        do{
+            opcion = capt.nextLine();
+            if(val.esNumero(opcion)){
+                menu = Integer.parseInt(opcion);
+                PR = menu;
+                ok=false;
+            }  
+            else{
+                System.out.println("\033[31mNo es un numero, vuelve a intentarlo.\033[30m");
+                ok = true;
+            } 
+        }
+        while(ok == true);
         
         //Acuerdate de instanciar las clases
         
@@ -85,7 +101,7 @@ public class Practica1 {
                                 precio = Integer.parseInt(opcion);
                         }
                     }
-                    while(precio >=6000);
+                    while(precio >= PR);
                     
                     // COMPROBACION DEL CLIENTE
                     do{
@@ -102,7 +118,7 @@ public class Practica1 {
                                 }   
                             }
                             
-                            if((precio+pre) >6000){
+                            if((precio+pre) > PR){
                                 System.out.println("El precio total de las motos"
                                         + " no puede superar los 6000 euros."
                                 +" O el ID_CLIENTE NO EXISTE.");
@@ -186,7 +202,7 @@ public class Practica1 {
                         }// for     
                         if(cont != 0){
 
-                            if((precio + pre) >6000){
+                            if((precio + pre) > PR){
                                 System.out.println("El precio total de las motos"
                                             + " no puede superar los 6000 euros.");
                                 ok = true;

@@ -16,9 +16,6 @@ public class Cliente {
     private int ID_SOCIO;
     private static int PROX_ID = 1;
     
-    //La suma del precio de todas la motos de1 cliente no puede superar 6000euros
-    private static final int MAX_PR = 6000;
-    
     private ArrayList<Integer> motos_dis = new ArrayList<Integer>();
     
     
