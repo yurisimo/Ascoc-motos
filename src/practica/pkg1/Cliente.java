@@ -50,7 +50,9 @@ public class Cliente {
         if(!moto.isEmpty()){
             for(int i = 0; i < moto.size(); i++){
                 if(moto.get(i).getID_SOCIO() == getID()){
-                    resultado= resultado + String.format("   " +"%03d",moto.get(i).getID_MOTO())+ " "+moto.get(i).getNombre() +", " +moto.get(i).getPrecio()+ " €";
+                    resultado= resultado + String.format("   " +"%03d",moto.get(i).getID_MOTO())+ " "
+                            +moto.get(i).getNombre() +", " +moto.get(i).getPrecio()
+                            + " €"+". Otros gastos de la moto: "+moto.get(i).getOtros_gastos() +"€.";
                 }
             }
             

@@ -19,15 +19,17 @@ public class Moto {
     private int ID_SOCIO;
     private static int PROX_ID = 1;
     private static int N_MOTOS = 0;
+    private int otros_gastos = 0;
     
     //Constructor de la clase
-    public Moto(String matricula, String nombre, String motor, int precio, int id_socio){
+    public Moto(String matricula, String nombre, String motor, int precio, int id_socio, int gasto){
         this.matricula = matricula;
         this.nombre = nombre;
         this.motor = motor;
         this.precio = precio;
         this.ID_MOTO = PROX_ID;
         this.ID_SOCIO = id_socio;
+        otros_gastos = gasto;
         
         N_MOTOS++;
         PROX_ID++;
@@ -94,14 +96,29 @@ public class Moto {
         for(int i = 0; i < cl.size(); i++)
             if(cl.get(i).getID() == ID_SOCIO){
                 moto = cl.get(i).getNombre();
-        resultado = "ID_MOTO: " + 
+                resultado = "ID_MOTO: " + 
                             String.format("%03d", ID_MOTO)+ " " 
                                 +nombre +", de "
                                 +motor+ ",con matricula "
                                 +matricula + " y precio "
-                                +precio +"€ " +"(" +moto+ ")" + "\n";
+                                +precio +"€. " +"(" +moto+ ")"
+                                +" Otros gastos de la moto: " +otros_gastos+" €.\n";
             }
         return resultado;
         }
+
+    /**
+     * @return the otros_gastos
+     */
+    public int getOtros_gastos() {
+        return otros_gastos;
+    }
+
+    /**
+     * @param otros_gastos the otros_gastos to set
+     */
+    public void setOtros_gastos(int otros_gastos) {
+        this.otros_gastos = otros_gastos;
+    }
     
 }

@@ -22,8 +22,8 @@ public class Practica1 {
         // TODO code application logic here
         boolean salir = false;
         boolean ok = false;
-        int idCliente=0, precio=0, pre =0,cont=0;
-        int menu=0,idMoto=0,usuarioAntiguo=0;
+        int idCliente=0, precio=0, pre =0,cont=0, idMotoBuscada=0;
+        int menu=0,idMoto=0,usuarioAntiguo=0,precioGastos=0;
         String opcion = "",nombre = "", marca, matricula, motor;
         Cliente cliente;
         ArrayList<Cliente> cli= new ArrayList<Cliente>();
@@ -75,7 +75,7 @@ public class Practica1 {
                     System.out.println("\033[31mNo es un numero, vuelve a intentarlo.\033[30m");
                 } 
             }
-            while(menu >7 || menu <= 0);
+            while(menu >8 || menu <= 0);
             
             switch(menu){
                 case 1:
@@ -134,6 +134,21 @@ public class Practica1 {
                     }
                     while(ok == true);
                     
+                    //Gastos nuevos
+                    do{
+                        System.out.println("Introduzca Gastos extra: ");
+                        opcion = capt.nextLine();
+                        if(val.esNumero(opcion) !=false){
+                            precioGastos = Integer.parseInt(opcion);
+                            ok = false;
+                        }else{
+                            System.out.println("No es un entero.");
+                            ok = true;
+                        }
+                    }
+                    while(ok==true);
+                    
+                    
                     System.out.println("Introduzca el Modelo: ");
                     marca = capt.nextLine();
                     
@@ -143,7 +158,7 @@ public class Practica1 {
                     System.out.println("Introduzca Motor: ");
                     motor = capt.nextLine();
                     
-                    moto = new Moto(matricula, marca, motor, precio, idCliente);
+                    moto = new Moto(matricula, marca, motor, precio, idCliente, precioGastos);
                     idMoto = moto.getID_MOTO();
                     System.out.println("\033[32mSe ha creado una nueva moto" 
                             +" con numero ID_MOTO: " + 
@@ -276,6 +291,58 @@ public class Practica1 {
                     
                     System.out.println("\033[32mSe ha creado una nuevo archivo. \033[30m" +opcion+".txt"+"\n");
                     salir = true;
+                    menu = 0;
+                    Menu();
+                    break;
+                case 8:
+                    ok=true;
+                    //Comprobaciones sobre moto
+                    System.out.println(">> Incrementar otros gastos a motos.\n");
+                    do{
+                    System.out.println("Introduzca ID_MOTO: ");
+                    opcion = capt.nextLine();
+                    if(val.esNumero(opcion)){
+                        idMoto = Integer.parseInt(opcion);
+                        System.out.println("Has seleccionado ID_MOTO: " +idMoto+"\n");
+                        //1ºcomprobar si existe la moto
+                        cont=0;
+                        for(int i = 0; i < mot.size(); i++){
+                            if(mot.get(i).getID_MOTO() == idMoto){
+                                ok = false;
+                                idMotoBuscada = i;
+                                cont++;
+                            }  
+                        }// for 
+                        
+                        if(cont ==0){
+                            System.out.println("No existe ninguna moto con esa ID.");
+                            ok = true;
+                        } 
+                        //Gastos nuevos
+                        do{
+                            System.out.println("Introduzca Gastos extra: ");
+                            opcion = capt.nextLine();
+                            if(val.esNumero(opcion) !=false){
+                                precio = Integer.parseInt(opcion);
+                                ok = false;
+                            }else{
+                                System.out.println("No es un entero.");
+                                ok = true;
+                            }
+                        }
+                        while(ok==true);
+                        // Actualizamos las motos
+                        precio = precio + mot.get(idMotoBuscada).getOtros_gastos();
+                        mot.get(idMotoBuscada).setOtros_gastos(precio);
+                    }  
+                    else{
+                        menu = 10;
+                        System.out.println("\033[31mNo es un numero, vuelve a intentarlo.\033[30m");
+                    } 
+                }
+                while(ok);
+                    menu = 0;
+                    Menu();
                     break;
             } // switch
 
@@ -293,7 +360,8 @@ public class Practica1 {
                 + "4. Listar en pantalla los miembros con motos en posesión\n"
                 + "5. Listar todas las motos\n"
                 + "6. Mostrar las cesiones realizadas\n"
-                + "7. Salir del programa");      
+                + "7. Salir del programa\n"
+                + "8. Incrementar otros gastos a motos.");      
         System.out.println("#########################################################");
     }
     
