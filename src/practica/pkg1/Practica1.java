@@ -22,7 +22,7 @@ public class Practica1 {
         // TODO code application logic here
         boolean salir = false;
         boolean ok = false;
-        int idCliente=0, precio=0, pre =0,cont=0, idMotoBuscada=0;
+        int idCliente=0, precio=0, pre =0,cont=0, idMotoBuscada=0, idCliente2=0;
         int menu=0,idMoto=0,usuarioAntiguo=0,precioGastos=0;
         String opcion = "",nombre = "", marca, matricula, motor;
         Cliente cliente;
@@ -71,11 +71,11 @@ public class Practica1 {
                     System.out.println("Has seleccionado la opcion " +menu+"\n");
                 }  
                 else{
-                    menu = 10;
+                    menu = 120;
                     System.out.println("\033[31mNo es un numero, vuelve a intentarlo.\033[30m");
                 } 
             }
-            while(menu >8 || menu <= 0);
+            while(menu >10 || menu <= 0);
             
             switch(menu){
                 case 1:
@@ -93,7 +93,7 @@ public class Practica1 {
                 case 2:
                     System.out.println(">> Registrar una nueva motocicleta\n");
                     
-                    //EL PRECIO TIENE QUE SER UN ENTERO Y SER MENOS DE 6000euros
+                    //EL PRECIO TIENE QUE SER UN ENTERO Y SER MENOS DE PR euros
                     do{
                         System.out.println("Introduzca Precio de la Motocicleta: ");
                         opcion = capt.nextLine();
@@ -120,17 +120,16 @@ public class Practica1 {
                             
                             if((precio+pre) > PR){
                                 System.out.println("El precio total de las motos"
-                                        + " no puede superar los 6000 euros."
-                                +" O el ID_CLIENTE NO EXISTE.");
+                                        + " no puede superar los "+PR+"€.");
                                 ok = true;
                             }else{
                                 ok = false;
                             }    
                                 
                         }else{
-                            System.out.println("\033[31mNo es un numero, vuelve a intentarlo.\033[30m");
+                            System.out.println("\033[31mNo es un entero.\033[30m");
                             ok = true;
-                        }
+                        }//if
                     }
                     while(ok == true);
                     
@@ -142,7 +141,7 @@ public class Practica1 {
                             precioGastos = Integer.parseInt(opcion);
                             ok = false;
                         }else{
-                            System.out.println("No es un entero.");
+                            System.out.println("\033[31mNo es un entero.\033[30m");
                             ok = true;
                         }
                     }
@@ -174,6 +173,7 @@ public class Practica1 {
                 case 3:    
                     System.out.println(">> Registrar una cesión\n");
                     ok = true;
+                    cont = 0;
                 do{
                     System.out.println("Introduzca ID_MOTO: ");
                     opcion = capt.nextLine();
@@ -185,52 +185,58 @@ public class Practica1 {
                             if(mot.get(i).getID_MOTO() == idMoto){
                                 ok = false;
                                 precio = mot.get(i).getPrecio();
+                                //IDcliente de la antigua moto
                                 usuarioAntiguo = mot.get(i).getID_SOCIO();  
                                 cont++;
                             }  
                         }// for 
                         
-                        if(cont ==0){
+                        if(cont==0){
                             System.out.println("No existe ninguna moto con esa ID.");
                             ok = true;
                         } 
                     }  
                     else{
-                        menu = 10;
-                        System.out.println("\033[31mNo es un numero, vuelve a intentarlo.\033[30m");
-                    } 
+                        menu = 120;
+                        System.out.println("\033[31mNo es un entero.\033[30m");
+                    }//if
                 }
                 while(ok);
                 
                 // INSERCION Y COMPROBACION DEL NUEVO USUARIO
                 ok=true;
+                cont=0;
                 do{
                     System.out.println("ID_CLIENTE del nuevo miembro: ");
                     opcion = capt.nextLine();
                     if(val.esNumero(opcion)){
+                        //nuevo idClliente
                         idCliente = Integer.parseInt(opcion);
                         System.out.println("Has seleccionado ID_CLIENTE: " +idCliente+"\n\n");
                         for(int i = 0; i < cli.size(); i++){
-                            if(cli.get(i).getID() == idCliente)
+                            if(cli.get(i).getID() == idCliente){
                                 pre = cli.get(i).getPrecio(mot);
+                                //idCliente=i;
+                                idCliente2 = i;
                             cont++;
+                            }
                         }// for     
                         if(cont != 0){
-
                             if((precio + pre) > PR){
                                 System.out.println("El precio total de las motos"
-                                            + " no puede superar los 6000 euros.");
+                                            + " no puede superar los "+PR+" euros.");
                                 ok = true;
                             }else{
-                                        //Si todo ha ido bien hacemos las cesiones
+                                //Si todo ha ido bien hacemos las cesiones
                                 cesion = new Cesion(idMoto, idCliente, usuarioAntiguo);
                                 ces.add(cesion);
-                                
                                 for(int j=0; j < mot.size(); j++){
                                     if(mot.get(j).getID_MOTO() == idMoto){
                                         //Asignamos nueva moto
                                         mot.get(j).setID_SOCIO(idCliente);
-                                        System.out.println("\033[32mSe ha creado una nueva cesion entre miembro.\033[30m\n");
+                                        //actualizamos num de cesiones del cliente
+                                        cli.get(idCliente2).setNum_cesiones(cli.get(idCliente2).getNum_cesiones());
+                                        System.out.println("\033[32mSe ha creado una nueva cesion entre miembros.\033[30m\n");
                                     }
                                 }
                                 ok = false;
@@ -274,9 +280,9 @@ public class Practica1 {
                     break;
                 case 6:
                     System.out.println(">> Listado de cesiones\n");
-                    for(int i = 0; i < ces.size(); i++){
+                    for(int i = 0; i < ces.size(); i++)
                         System.out.println(ces.get(i).getInfo(mot, cli));
-                    }
+                    
                     System.out.println("\n");
                     menu = 0;
                     Menu();
@@ -344,6 +350,34 @@ public class Practica1 {
                     menu = 0;
                     Menu();
                     break;
+                case 9:
+                    System.out.println(">> Eliminar miembro.\n");
+                    menu = 0;
+                    Menu();
+                    break;
+                case 10:
+                    System.out.println(">> Miembros con mas cesiones.\n");
+                    ArrayList<Integer> miemCes= new ArrayList<Integer>();
+                    int max = 0;
+                    //Miramos quien tiene mas cesiones
+                    for(int i = 0; i < cli.size(); i++){
+                        if(max >= cli.get(i).getNum_cesiones())
+                            max = cli.get(i).getNum_cesiones(); 
+                    }
+
+                    // Ahora recorreremos todos los maximos y los 
+                    //guardaremos en un array, por si hay mas de uno  
+                    //Aqui guardaremos sus variables del vector
+                    for(int i = 0; i < cli.size(); i++)
+                        if(cli.get(i).getNum_cesiones() == max)
+                            miemCes.add(cli.get(i).getNum_cesiones());                 
+                    // Luego simplemente los listaremos
+                    for(int i = 0; i < miemCes.size(); i++)
+                        System.out.println(ces.get(miemCes.get(i)).getInfo(mot, cli));
+                    
+                    menu = 0;
+                    Menu();
+                    break;
             } // switch
 
         } //while
@@ -361,7 +395,9 @@ public class Practica1 {
                 + "5. Listar todas las motos\n"
                 + "6. Mostrar las cesiones realizadas\n"
                 + "7. Salir del programa\n"
-                + "8. Incrementar otros gastos a motos.");      
+                + "8. Incrementar otros gastos a motos\n"
+                + "9. Eliminar miembro\n"
+                + "10.Miembros con mas cesiones");      
         System.out.println("#########################################################");
     }
     

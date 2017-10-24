@@ -15,13 +15,14 @@ public class Cliente {
     private String nombre;
     private int ID_SOCIO;
     private static int PROX_ID = 1;
-    
+    private int num_cesiones=0;
     private ArrayList<Integer> motos_dis = new ArrayList<Integer>();
     
     
     public Cliente(String nombre){
         this.nombre = nombre;
         this.ID_SOCIO = PROX_ID;
+        num_cesiones = 0;
         
         PROX_ID++;
     }
@@ -72,5 +73,19 @@ public class Cliente {
     }
     public String getNombre(){
         return nombre;
+    }
+
+    /**
+     * @return the num_cesiones
+     */
+    public int getNum_cesiones() {
+        return num_cesiones;
+    }
+
+    /**
+     * @param num_cesiones the num_cesiones to set
+     */
+    public void setNum_cesiones(int num_cesiones) {
+        this.num_cesiones = num_cesiones + 1;
     }
 }
